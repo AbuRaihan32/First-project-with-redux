@@ -33,33 +33,45 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { addTask } from "@/redux/features/tasks/tasksSlice";
+import { updateTask } from "@/redux/features/tasks/tasksSlice";
 import { useAppDispatch } from "@/redux/Hooks";
 import { ITask } from "@/types/ITask";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Edit } from "lucide-react";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-export function AddTaskModal() {
+interface IProp {
+  task: ITask;
+}
+
+export function EditTaskModal({ task }: IProp) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const form = useForm();
+  const form = useForm({
+    defaultValues: task,
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-    dispatch(addTask(data as ITask));
+    dispatch(updateTask(data as ITask));
     setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>Add Task</Button>
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="p-0 text-red-500"
+          variant={"link"}
+        >
+          <Edit />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Task</DialogTitle>
+          <DialogTitle>Edit Task</DialogTitle>
           <DialogDescription>
             Write task details here. Click save when you're done.
           </DialogDescription>
@@ -124,7 +136,6 @@ export function AddTaskModal() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value}
                         onSelect={field.onChange}
                         // disabled={(date) =>
                         //   date > new Date() || date < new Date("1900-01-01")
