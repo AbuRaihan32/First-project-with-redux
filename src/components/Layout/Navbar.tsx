@@ -6,7 +6,7 @@ const Navbar = () => {
     <div className="w-full border-b flex items-center p-4">
       <div className="flex items-center">
         <img className="w-12" src="logo.png" alt="" />
-        <h1 className="text-xl text-blue-400 font-bold">Task Management</h1>
+        <h1 className="text-xl text-blue-400 font-bold">Task Master</h1>
       </div>
       <div className="flex gap-4 ml-52">
         <Link to={"/task"}>Task</Link>
